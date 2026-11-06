@@ -3103,6 +3103,8 @@ function Remove-AI-Files {
         if ($env:OneDrive) {
             Remove-Item -Path "$env:OneDrive\Microsoft Copilot Chat Files" -Force -Recurse -ErrorAction SilentlyContinue
         }
+        #copilot chat connection cache
+        Remove-Item "$env:LOCALAPPDATA\copilot" -Recurse -Force -ErrorAction SilentlyContinue
        
         #remove ai uri handlers
         Write-Status -msg 'Removing AI URI Handlers...'
