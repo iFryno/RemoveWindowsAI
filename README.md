@@ -54,10 +54,10 @@ In Windows 11 22H2 Microsoft began adding AI features like Copilot and Recall. S
  
 #### Manual AI Disabling
 - Unfortunately, not all features and settings can be disabled via a script. This guide will show additional AI features to disable.
-> **[Disable Other AI Features](https://github.com/zoicware/RemoveWindowsAI/blob/main/OtherAIFeatures.md)**
+> **[Disable Other AI Features](https://github.com/iFryno/RemoveWindowsAI/blob/main/OtherAIFeatures.md)**
   
 ### Read the Script Docs Here
-  > **[Documentation](https://github.com/zoicware/RemoveWindowsAI/blob/main/Documentation.md)**
+  > **[Documentation](https://github.com/iFryno/RemoveWindowsAI/blob/main/Documentation.md)**
 
   > [!WARNING]
   > Some third party anti-viruses will falsely detect the script as malicious, obviously this is a false positive and the anti-virus will need to be temporarily disabled or set the script as an exclusion.
@@ -78,7 +78,7 @@ In Windows 11 22H2 Microsoft began adding AI features like Copilot and Recall. S
 
  ### Launch with UI
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1")))
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1")))
  ```
  ### Compact Command:
  ##### Link shortened using open source link shortener: https://kutt.to/
@@ -101,19 +101,19 @@ In Windows 11 22H2 Microsoft began adding AI features like Copilot and Recall. S
 
 **Run in Non-Interactive Mode with All Options**
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -AllOptions
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -AllOptions
  ```
 
 --- 
 
 **Run with Specific Options Example**
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -Options DisableRegKeys,RemoveAppxPackages,DisableCopilotPolicies 
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -Options DisableRegKeys,RemoveAppxPackages,DisableCopilotPolicies 
  ```
 
  **Run with Specific Options Excluded Example**
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -ExcludeOptions -Options DisableRegKeys,RemoveAppxPackages,DisableCopilotPolicies 
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -ExcludeOptions -Options DisableRegKeys,RemoveAppxPackages,DisableCopilotPolicies 
  ```
 
 **All Possible Options:**
@@ -135,7 +135,7 @@ DisableNPUDevice
 
 **Run Install Classic Apps**
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -InstallClassicApps photoviewer,mspaint,snippingtool,notepad  
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -InstallClassicApps photoviewer,mspaint,snippingtool,notepad  
  ```
 
 **All Possible Options:**
@@ -155,7 +155,7 @@ photoslegacy
 > 
 > **This creates a restore point for you**
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -backupMode -AllOptions
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -backupMode -AllOptions
  ```
 
 ---
@@ -163,7 +163,7 @@ photoslegacy
 **Revert Changes**
 
  ```PowerShell
- & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/zoicware/RemoveWindowsAI/main/RemoveWindowsAi.ps1"))) -nonInteractive -revertMode -AllOptions
+ & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1"))) -nonInteractive -revertMode -AllOptions
  ```
 
 ---
@@ -173,7 +173,7 @@ photoslegacy
 Given that Microsoft are continually updating and adding new AI features this script will attempt to stay updated for the newest stable build.
 
 You can view the newest updates to the script here:
-https://github.com/zoicware/RemoveWindowsAI/commits/main/
+https://github.com/iFryno/RemoveWindowsAI/commits/main/
 
  > [!NOTE]  
 > Any feature added to an Insider build will not be added to this script till it's added to the latest stable release
