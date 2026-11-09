@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **Temporary mirror.** The original repository by [zoicware](https://github.com/zoicware/RemoveWindowsAI) is currently unavailable, so this fork is hosting the script in the meantime. The script is his work and I've only changed the download URLs to point at this fork.
+
 # Remove Windows Ai
 ## Why?
 In Windows 11 22H2 Microsoft began adding AI features like Copilot and Recall. Since then, additional AI driven components have been added, many of which have never been publicly documented. This script aims to remove ALL of these features to improve user experience, privacy and security. 
@@ -80,11 +83,7 @@ In Windows 11 22H2 Microsoft began adding AI features like Copilot and Recall. S
  ```PowerShell
  & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/iFryno/RemoveWindowsAI/%23freezoic/RemoveWindowsAi.ps1")))
  ```
- ### Compact Command:
- ##### Link shortened using open source link shortener: https://kutt.to/
- ```PowerShell
- & ([scriptblock]::Create((irm 'https://kutt.to/RWAI')))
- ```
+
 
 
 
