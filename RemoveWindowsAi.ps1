@@ -1183,6 +1183,11 @@ function Disable-Registry-Keys {
             }
         }
     }
+
+    #new context menu customization reg key
+    Reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ContextMenu\Preferences\extensions\Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe' /v 'Enabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ContextMenu\DefaultState\extensions\Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe' /v 'Enabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    
     #sfc should revert this and im not sure a clean way to get the velo ids back since they would be removed from the file
     #also most likely this wont change anything for the user
     if (!$revert) {
