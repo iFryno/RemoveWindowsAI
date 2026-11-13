@@ -2475,6 +2475,17 @@ function Remove-AI-Appx-Packages {
             'MicrosoftCorporationII.WinML.Qualcomm*'
             'WindowsWorkload.EP.Intel.OpenVINO*'
             'WindowsWorkload.OnnxRuntime*'
+            'WindowsWorkload.Data.ImageCreation*'
+            'WindowsWorkload.Data.ImageProcessing*'
+            'WindowsWorkload.Data.ImageTransform*'
+            'WindowsWorkload.Data.Vision*'
+            'WindowsWorkload.FaceAnalysis*'
+            'WindowsWorkload.ImageGenerator*'
+            'WindowsWorkload.ImageObjectExtractor*'
+            'WindowsWorkload.ImageObjectRemover*'
+            'WindowsWorkload.ImageScaler*'
+            'WindowsWorkload.ImageSegmentation*'
+            'WindowsWorkload.Parallax*'
         )
 
         if ($backup) {
