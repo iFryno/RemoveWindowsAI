@@ -1035,6 +1035,11 @@ function Disable-Registry-Keys {
     #disable connected experiences in office should prevent copilot from working 
     Reg.exe add 'HKCU\Software\Policies\Microsoft\office\16.0\common\privacy' /v 'controllerconnectedservicesenabled' /t REG_DWORD /d @('2', '1')[$revert] /f *>$null
     Reg.exe add 'HKCU\Software\Policies\Microsoft\office\16.0\common\privacy' /v 'usercontentdisabled' /t REG_DWORD /d @('2', '1')[$revert] /f *>$null
+    Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common' /v 'copilotdevicecodetabpreinstall' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common' /v 'copilotdevicefileuploadenabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common' /v 'copilotdevicereadenabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common' /v 'copilotdevicesearchenabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common' /v 'copilotdevicewriteenabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
     #disable copilot in word
     Reg.exe add 'HKCU\Software\Microsoft\Office\16.0\Word\Options' /v 'EnableCopilot' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
     #disable copilot in excel
@@ -1058,6 +1063,8 @@ function Disable-Registry-Keys {
     }
     #disable writing assitant (not sure where this is)
     Reg.exe add 'HKCU\Software\Microsoft\Office\16.0\WritingAssistant' /v 'Enabled' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKCU\Software\Policies\Microsoft\office\16.0\writingassistant' /v 'writingassistantadminchoice' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
+    Reg.exe add 'HKCU\Software\Policies\Microsoft\office\16.0\writingassistant' /v 'writingassistantinstallandstartupadminchoice' /t REG_DWORD /d @('0', '1')[$revert] /f *>$null
     #disable office ai content safety
     Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common\ai\contentsafety\general' /v 'disablecontentsafety' /t REG_DWORD /d @('1', '0')[$revert] /f *>$null
     Reg.exe add 'HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common\ai\contentsafety\specific\alternativetext' /v 'disablecontentsafety' /t REG_DWORD /d @('1', '0')[$revert] /f *>$null
@@ -3398,13 +3405,50 @@ Get-ScheduledTask -TaskName "*Office Actions Server*" -ErrorAction SilentlyConti
         "
         
         Run-Trusted -command $command -psversion $psversion
+
+        Write-Status -msg 'Disabling AI Event Viewer Logs and ETW Providers...'
         #disable windows ai event viewer logs
-        wevtutil sl Microsoft-Windows-AI-ModelContextProtocol/Admin /e:false *>$null
-        wevtutil sl Microsoft-Windows-AI-Platform/Admin /e:false *>$null
-        wevtutil sl Microsoft-Windows-AI-ModelContextProtocol/Operational /e:false *>$null
-        wevtutil sl Microsoft-Windows-AI-Platform/Operational /e:false *>$null
+        $aiEventLogs = @(
+            'Microsoft-Windows-AI-Platform/Operational',
+            'Microsoft-Windows-AI-Platform/Admin',
+            'Microsoft-Windows-AI-ModelContextProtocol/Admin',
+            'Microsoft-Windows-AI-ModelContextProtocol/Operational',
+            'Microsoft-Windows-AgentConnector-FileSearch/Admin',
+            'Microsoft-Windows-AgentConnector-FileSearch/Operational',
+            'Microsoft-Windows-AgentConnector-FilesAgent/Admin',
+            'Microsoft-Windows-AgentConnector-FilesAgent/Operational',
+            'Microsoft-Windows-AgentConnector-Settings/Admin',
+            'Microsoft-Windows-AgentConnector-Settings/Operational'
+        )
+        foreach ($log in $aiEventLogs) {
+            wevtutil sl $log /e:false *>$null
+        }
+        
+        #ensure all etw providers are also disabled
+        $aiproviders = @(
+            'Microsoft-Windows-AgenticPlatform-IsoEnvBroker',
+            'Microsoft-Windows-AI-ModelContextProtocol',
+            'Microsoft-Windows-AI-Platform',
+            'Microsoft-Windows-AgentConnector-FilesAgent',
+            'Microsoft-Windows-AgentConnector-FileSearch',
+            'Microsoft-Windows-AgentConnector-Settings'
+        )
+        $providers = Get-NetEventProvider -ShowInstalled | Select-Object -Property * | Where-Object { $aiproviders -contains $_.name }
+        if ($providers) {
+            foreach ($provider in $providers) {
+                #get provider reg path to disable in all sessions
+                $paths = Get-ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Autologger' -Recurse | Where-Object { $_.name -like "*$($provider.Guid)*" }
+                if ($paths) {
+                    foreach ($path in $paths) {
+                        Reg.exe add $path.Name /v 'Enabled' /t REG_DWORD /d '0' /f *>$null
+                    }
+                }
+                #needs trusted installer priv to remove locked by eventlog service 
+                $command = "Remove-EtwTraceProvider $($provider.Guid)"
+                Run-Trusted -command $command
+            }
+        }
     }
-    
 }
 
 
